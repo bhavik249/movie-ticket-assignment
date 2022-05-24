@@ -42,12 +42,12 @@ INSTALLED_APPS = [
     "daterangefilter",
 
     "easy_thumbnails",
-    "aws_xray_sdk.ext.django",
+    # "aws_xray_sdk.ext.django",
 
 ]
 
 MIDDLEWARE = [
-    "aws_xray_sdk.ext.django.middleware.XRayMiddleware",
+    # "aws_xray_sdk.ext.django.middleware.XRayMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
