@@ -31,12 +31,12 @@ movies = [
 def forwards_func(apps, schema_editor):
     db_alias = schema_editor.connection.alias
     Movie = apps.get_model("seating", "Movie")
-    for movie in movies:
-        Movie.objects.using(db_alias).create(**movie)
     Seat = apps.get_model("seating", "Seat")
-    for row in seat_rows:
-        for seat in range(1, total_seats_in_row):
-            Seat.objects.using(db_alias).create(row=row, seat_no=seat)
+    for movie in movies:
+        movie_obj = Movie.objects.using(db_alias).create(**movie)
+        for row in seat_rows:
+            for seat in range(1, total_seats_in_row):
+                Seat.objects.using(db_alias).create(row=row, seat_no=seat, movie=movie_obj)
 
 
 class Migration(migrations.Migration):
@@ -97,6 +97,12 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+        ),
+        migrations.AddField(
+            model_name='seat',
+            name='movie',
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='seats', to='seating.movie'),
+            preserve_default=False,
         ),
         migrations.RunPython(forwards_func, migrations.RunPython.noop),
     ]

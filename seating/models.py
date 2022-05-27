@@ -26,6 +26,8 @@ class Movie(models.Model):
 
 
 class Seat(BaseModel):
+    movie = models.ForeignKey(
+        "seating.Movie", on_delete=models.CASCADE, related_name="seats")
     row = models.CharField(max_length=1)
     seat_no = models.CharField(max_length=2)
 

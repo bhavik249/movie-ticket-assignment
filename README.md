@@ -18,6 +18,11 @@ You need to implement locking mechanism for user for certain period of time
 
 ### Create a virtualenv and activate it
 
+```sh
+python3 -m venv env
+source env/bin/activate
+```
+
 ### Install dependencies
 
 ```sh
