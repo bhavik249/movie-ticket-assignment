@@ -20,14 +20,20 @@ class Movie(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     price = models.FloatField()
+    theater = models.ForeignKey(
+        'seating.Theater', on_delete=models.PROTECT, related_name='movies')
 
     def __str__(self) -> str:
         return self.name
 
 
+class Theater(models.Model):
+    name = models.CharField(max_length=255)
+
+
 class Seat(BaseModel):
-    movie = models.ForeignKey(
-        "seating.Movie", on_delete=models.CASCADE, related_name="seats")
+    theater = models.ForeignKey(
+        'seating.Theater', on_delete=models.CASCADE, related_name='seats')
     row = models.CharField(max_length=1)
     seat_no = models.CharField(max_length=2)
 

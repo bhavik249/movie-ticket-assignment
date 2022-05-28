@@ -1,6 +1,7 @@
+from attr import field
 from rest_framework import serializers
 
-from .models import Movie, Seat
+from .models import Movie, Seat, Theater
 
 
 class SeatSerializer(serializers.ModelSerializer):
@@ -10,9 +11,18 @@ class SeatSerializer(serializers.ModelSerializer):
         fields = ('id', 'row', 'seat_no')
 
 
+class TheaterSerializer(serializers.ModelSerializer):
+    seats = SeatSerializer(Seat.objects.all(), many=True)
+
+    class Meta:
+        model = Theater
+        fields = ('id', 'name', 'seats')
+
+
 class MovieSerializer(serializers.ModelSerializer):
-    seats = SeatSerializer(Seat.objects.all(), many=True, read_only=True)
+    theater = TheaterSerializer()
 
     class Meta:
         model = Movie
-        fields = ('id', 'name', 'description', 'start', 'end', 'price', 'seats', 'reservations')
+        fields = ('id', 'name', 'description', 'start',
+                  'end', 'price', 'theater', 'reservations')
