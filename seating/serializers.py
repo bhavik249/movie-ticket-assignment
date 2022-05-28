@@ -1,7 +1,8 @@
-from attr import field
 from rest_framework import serializers
-
-from .models import Movie, Seat, Theater
+from django.db.models import Q
+from .models import Movie, Reservation, Seat, Theater, ReservationStatus
+from datetime import timedelta
+from django.utils import timezone
 
 
 class SeatSerializer(serializers.ModelSerializer):
@@ -11,21 +12,16 @@ class SeatSerializer(serializers.ModelSerializer):
         fields = ('id', 'row', 'seat_no')
 
 
-class TheaterSerializer(serializers.ModelSerializer):
-    seats = SeatSerializer(Seat.objects.all(), many=True)
-
-    class Meta:
-        model = Theater
-        fields = ('id', 'name', 'seats')
-
-
 class MovieSerializer(serializers.ModelSerializer):
-    theater = TheaterSerializer()
+    available_seats = serializers.SerializerMethodField()
+
+    def get_available_seats(self, obj):
+        return SeatSerializer(instance=obj.get_available_seats(), many=True).data
 
     class Meta:
         model = Movie
         fields = ('id', 'name', 'description', 'start',
-                  'end', 'price', 'theater', 'reservations')
+                  'end', 'price', 'theater', 'available_seats')
 
 
 class SeatLockSerializer(serializers.ModelSerializer):
@@ -34,3 +30,11 @@ class SeatLockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ('seats',)
+
+
+class SeatPurchaseSerializer(SeatLockSerializer):
+    payment = serializers.CharField()
+
+    class Meta:
+        model = Movie
+        fields = ('seats', 'payment')
