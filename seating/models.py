@@ -58,4 +58,4 @@ class Reservation(BaseModel):
         "user.CustomUser", on_delete=models.PROTECT, related_name="reservations")
 
     def __str__(self) -> str:
-        return f"{self.movie} {self.user} {self.status.label}"
+        return f"{self.movie} {self.user} {self.status}"

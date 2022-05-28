@@ -26,3 +26,11 @@ class MovieSerializer(serializers.ModelSerializer):
         model = Movie
         fields = ('id', 'name', 'description', 'start',
                   'end', 'price', 'theater', 'reservations')
+
+
+class SeatLockSerializer(serializers.ModelSerializer):
+    seats = serializers.CharField()
+
+    class Meta:
+        model = Movie
+        fields = ('seats',)
