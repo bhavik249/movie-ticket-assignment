@@ -62,3 +62,27 @@ API Authentication: http://127.0.0.1:8000/api-auth/login/
 Admin Panel: http://127.0.0.1:8000/nimda/
 
 Swagger: http://127.0.0.1:8000/api/docs/swagger/
+
+
+## Seating APIs
+
+1. `GET http://127.0.0.1:8000/api/v1/seatings/`
+
+2. `POST http://127.0.0.1:8000/api/v1/seatings/1/lock/`
+
+    JSON body:
+
+        {
+         "seats": "8,9"
+        }
+
+
+3. `POST http://127.0.0.1:8000/api/v1/seatings/1/purchase/`
+
+    JSON body:
+
+
+        {
+            "seats": "1,9",
+            "payment": "pay123"
+        }
